@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'antd';
 import { Icon } from 'components/Icon';
 import { useSpring, animated, config } from 'react-spring';
+import { BaseLayout } from 'components/Layout';
 
 export const App = () => {
   const props = useSpring({
@@ -11,9 +12,11 @@ export const App = () => {
   });
   return (
     <div>
-      <Icon icon={['fab', 'google']} />
-      <animated.div style={props}>I will fade in</animated.div>
-      <Button type="primary">Button</Button>
+      <BaseLayout>
+        <Icon icon={['fab', 'google']} />
+        <animated.div style={props}>I will fade in</animated.div>
+        <Button type="primary">Button</Button>
+      </BaseLayout>
     </div>
   );
 };
