@@ -1,26 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Button } from 'antd';
+import { Icon } from 'components/Icon';
+import { useSpring, animated, config } from 'react-spring';
 
-function App() {
+export const App = () => {
+  const props = useSpring({
+    opacity: 1,
+    from: { opacity: 0 },
+    config: config.wobbly,
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Icon icon={['fab', 'google']} />
+      <animated.div style={props}>I will fade in</animated.div>
+      <Button type="primary">Button</Button>
     </div>
   );
-}
-
-export default App;
+};
