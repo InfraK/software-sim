@@ -1,22 +1,27 @@
 import React from 'react';
-import { Button } from 'antd';
-import { Icon } from 'components/Icon';
-import { useSpring, animated, config } from 'react-spring';
 import { BaseLayout } from 'components/Layout';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Home } from 'containers/Home';
+import { Product } from 'containers/Product';
+import { routes } from 'constants/routes';
+import { CompanyCreation } from 'containers/CompanyCreation';
 
 export const App = () => {
-  const props = useSpring({
-    opacity: 1,
-    from: { opacity: 0 },
-    config: config.wobbly,
-  });
   return (
-    <div>
+    <BrowserRouter>
       <BaseLayout>
-        <Icon icon={['fab', 'google']} />
-        <animated.div style={props}>I will fade in</animated.div>
-        <Button type="primary">Button</Button>
+        <Switch>
+          <Route exact path={routes.home}>
+            <Home />
+          </Route>
+          <Route exact path={routes.product}>
+            <Product />
+          </Route>
+          <Route exact path={routes.create}>
+            <CompanyCreation />
+          </Route>
+        </Switch>
       </BaseLayout>
-    </div>
+    </BrowserRouter>
   );
 };
