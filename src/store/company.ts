@@ -5,7 +5,6 @@ const initialState: Company = {
   employees: [],
   money: 50000,
   name: '',
-  products: [],
 };
 
 const companySlice = createSlice({
@@ -13,7 +12,7 @@ const companySlice = createSlice({
   initialState,
   reducers: {
     createCompany(state, action: PayloadAction<BasicCompany>) {
-      state = { ...state, ...action.payload };
+      return { ...state, ...action.payload };
     },
   },
 });

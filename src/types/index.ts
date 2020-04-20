@@ -28,7 +28,6 @@ export interface BasicCompany {
 export interface Company extends BasicCompany {
   money: number;
   employees: Employee[];
-  products: Product[];
 }
 
 export type CEOBackgrounds = Roles;

@@ -1,6 +1,109 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Table, Button, Space, Drawer, Form, Input } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { Page } from 'components/Page';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from 'store';
+import { BasicProduct, Product } from 'types';
+import { Store } from 'antd/lib/form/interface';
+import { createProduct } from 'store/products';
+import { ActionButtons } from 'components/ActionButtons';
+import { Link } from 'react-router-dom';
+import { routes } from 'constants/routes';
 
-export const Product = () => {
-  return <Page title="Products">So... You want to create a new product</Page>;
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (name: string, product: Product) => {
+      return (
+        <Link to={routes.productDetails.replace(':id', product.id)}>
+          {name}
+        </Link>
+      );
+    },
+  },
+  {
+    title: 'Version',
+    dataIndex: 'version',
+    key: 'version',
+  },
+  {
+    title: 'Features',
+    dataIndex: 'features',
+    key: 'features',
+  },
+];
+
+export const ProductPage = () => {
+  const [visible, setVisible] = useState(false);
+  const dispatch = useDispatch();
+
+  const products = useSelector(({ products }: RootState) =>
+    Object.values(products)
+  );
+
+  const onSubmitProduct = (product: BasicProduct) => {
+    dispatch(createProduct(product));
+    setVisible(false);
+  };
+
+  return (
+    <Page title="Products">
+      <Drawer
+        title="Create new Product"
+        visible={visible}
+        onClose={() => setVisible(false)}
+      >
+        <ProductForm onSubmit={onSubmitProduct} />
+      </Drawer>
+      <Space direction="vertical" style={{ width: '100%' }}>
+        <ActionButtons>
+          <Button type="primary" onClick={() => setVisible(true)}>
+            <PlusOutlined /> Create Product
+          </Button>
+        </ActionButtons>
+        <Table columns={columns} dataSource={products} />
+      </Space>
+    </Page>
+  );
+};
+
+interface ProductFormProps {
+  onSubmit: (values: BasicProduct) => void;
+}
+
+const ProductForm = ({ onSubmit }: ProductFormProps) => {
+  const [form] = Form.useForm();
+
+  const onFinish = (values: Store) => {
+    onSubmit(values as BasicProduct);
+    form.resetFields();
+  };
+
+  return (
+    <Form
+      form={form}
+      initialValues={{ name: '' }}
+      onFinish={onFinish}
+      hideRequiredMark
+      layout="vertical"
+    >
+      <Form.Item
+        label="Product Name"
+        name="name"
+        rules={[{ required: true, message: 'Your new product needs a name!' }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item>
+        <ActionButtons>
+          <Button type="primary" htmlType="submit">
+            Create
+          </Button>
+        </ActionButtons>
+      </Form.Item>
+    </Form>
+  );
 };

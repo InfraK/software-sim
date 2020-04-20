@@ -19,7 +19,8 @@ const ceoSlice = createSlice({
   initialState,
   reducers: {
     createCEO(state, action: PayloadAction<BasicCEO>) {
-      state = buildCeo(action.payload);
+      const ceo = buildCeo(action.payload);
+      return ceo;
     },
   },
 });

@@ -9,7 +9,9 @@ import {
 } from '@ant-design/icons';
 import { Link, useLocation } from 'react-router-dom';
 import { routes } from 'constants/routes';
-const { Footer, Sider } = Layout;
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
+const { Footer, Sider, Header } = Layout;
 
 interface BaseLayoutProps {
   children: React.ReactNode;
@@ -18,6 +20,7 @@ interface BaseLayoutProps {
 export const BaseLayout = ({ children }: BaseLayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const { money, name } = useSelector(({ company }: RootState) => company);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -54,6 +57,9 @@ export const BaseLayout = ({ children }: BaseLayoutProps) => {
         </Menu>
       </Sider>
       <Layout>
+        <Header>
+          {name || 'Company Name'} | Money: {money}
+        </Header>
         {children}
         <Footer>Software Sim</Footer>
       </Layout>

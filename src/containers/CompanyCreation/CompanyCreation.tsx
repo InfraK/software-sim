@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Steps, Form, Input, Select, Typography, Button, Result } from 'antd';
+import {
+  Steps,
+  Form,
+  Input,
+  Select,
+  Typography,
+  Button,
+  Result,
+  Space,
+} from 'antd';
 import {
   SolutionOutlined,
   UserOutlined,
@@ -13,6 +22,7 @@ import { BasicCEO, BasicCompany, CEOBackgrounds } from 'types';
 import { useDispatch } from 'react-redux';
 import { createCompany } from 'store/company';
 import { createCEO } from 'store/ceo';
+import { ActionButtons } from 'components/ActionButtons';
 const { Step } = Steps;
 const { Title } = Typography;
 
@@ -135,9 +145,11 @@ const CEOForm = ({ values, onSubmit }: CEOFormProps) => {
         </Select>
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit">
-          Continue
-        </Button>
+        <ActionButtons>
+          <Button type="primary" htmlType="submit">
+            Continue
+          </Button>
+        </ActionButtons>
       </Form.Item>
     </Form>
   );
@@ -177,12 +189,16 @@ const CompanyForm = ({ values, onSubmit, onBack }: CompanyForm) => {
         <Input />
       </Form.Item>
       <Form.Item>
-        <Button type="danger" htmlType="submit" onClick={onBack}>
-          Back
-        </Button>
-        <Button type="primary" htmlType="submit">
-          Continue
-        </Button>
+        <ActionButtons>
+          <Space>
+            <Button htmlType="submit" onClick={onBack}>
+              Back
+            </Button>
+            <Button type="primary" htmlType="submit">
+              Continue
+            </Button>
+          </Space>
+        </ActionButtons>
       </Form.Item>
     </Form>
   );

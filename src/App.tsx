@@ -2,9 +2,10 @@ import React from 'react';
 import { BaseLayout } from 'components/Layout';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Home } from 'containers/Home';
-import { Product } from 'containers/Product';
+import { ProductPage } from 'containers/Product';
 import { routes } from 'constants/routes';
 import { CompanyCreation } from 'containers/CompanyCreation';
+import { ProductDetails } from 'containers/ProductDetails';
 
 export const App = () => {
   return (
@@ -15,7 +16,10 @@ export const App = () => {
             <Home />
           </Route>
           <Route exact path={routes.product}>
-            <Product />
+            <ProductPage />
+          </Route>
+          <Route exact path={routes.productDetails}>
+            <ProductDetails />
           </Route>
           <Route exact path={routes.create}>
             <CompanyCreation />
