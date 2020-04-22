@@ -6,6 +6,7 @@ import { ProductPage } from 'containers/Product';
 import { routes } from 'constants/routes';
 import { CompanyCreation } from 'containers/CompanyCreation';
 import { ProductDetails } from 'containers/ProductDetails';
+import { Staff } from 'containers/Staff';
 
 export const App = () => {
   return (
@@ -23,6 +24,9 @@ export const App = () => {
           </Route>
           <Route exact path={routes.create}>
             <CompanyCreation />
+          </Route>
+          <Route exact path={routes.staff}>
+            <Staff />
           </Route>
         </Switch>
       </BaseLayout>

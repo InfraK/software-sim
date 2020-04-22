@@ -39,6 +39,7 @@ export interface BasicPerson {
   firstName: string;
   lastName: string;
   expertise: Expertise;
+  salary: number;
 }
 
 export interface Expertise {
@@ -52,5 +53,9 @@ export interface Employee extends BasicPerson {
   productId?: Product['id'];
   hiredOn: Date;
   salary: number;
-  role: Roles;
+  role?: Roles;
+}
+
+export interface EmployeeWithProduct extends Employee {
+  product?: Product;
 }

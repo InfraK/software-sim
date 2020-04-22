@@ -46,8 +46,9 @@ export const BaseLayout = ({ children }: BaseLayoutProps) => {
             <CodeOutlined />
             <span>Products</span>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item key={routes.staff}>
             <TeamOutlined />
+            <Link to={routes.staff} />
             <span>Staff</span>
           </Menu.Item>
           <Menu.Item>
