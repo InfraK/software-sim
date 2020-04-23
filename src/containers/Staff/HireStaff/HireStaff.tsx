@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { Table, Button } from 'antd';
-import { PlusOutlined, CheckOutlined } from '@ant-design/icons';
+import { Table, Button, Space, Descriptions, Drawer } from 'antd';
+import {
+  SearchOutlined,
+  UserAddOutlined,
+  UsergroupAddOutlined,
+} from '@ant-design/icons';
 import { BasicPerson } from 'types';
 import { ActionButtons } from 'components/ActionButtons';
 import { generatePersons } from 'utils';
 import { ColumnsType } from 'antd/lib/table';
 import { TableRowSelection } from 'antd/lib/table/interface';
+import { formatMoney } from 'utils/moneyFormatter';
 
 const hireColumns: ColumnsType<BasicPerson> = [
   {
@@ -18,6 +23,12 @@ const hireColumns: ColumnsType<BasicPerson> = [
     dataIndex: 'lastName',
     key: 'lastName',
   },
+  {
+    title: 'Salary',
+    dataIndex: 'salary',
+    key: 'salary',
+    render: (salary: number) => <span>{formatMoney(salary)}</span>,
+  },
 ];
 
 interface HireStaffState {
@@ -26,10 +37,12 @@ interface HireStaffState {
 }
 
 interface HireStaffProps {
+  visible: boolean;
   onSubmit: (persons: BasicPerson[]) => void;
+  onClose: () => void;
 }
 
-export const HireStaff = ({ onSubmit }: HireStaffProps) => {
+export const HireStaff = ({ visible, onClose, onSubmit }: HireStaffProps) => {
   const [selected, setSelected] = useState<HireStaffState>({
     keys: [],
     persons: [],
@@ -57,23 +70,60 @@ export const HireStaff = ({ onSubmit }: HireStaffProps) => {
   };
 
   return (
-    <div>
-      <ActionButtons>
-        <Button onClick={searchMore}>
-          <PlusOutlined />
-          Search More
-        </Button>
-        <Button type="primary" onClick={onHire}>
-          <CheckOutlined />
-          Hire Selected
-        </Button>
-      </ActionButtons>
-      <Table
-        rowKey={(person) => person.id}
-        rowSelection={rowSelection}
-        columns={hireColumns}
-        dataSource={state}
-      />
-    </div>
+    <Drawer
+      width={'40vw'}
+      title="Hire Staff"
+      visible={visible}
+      onClose={onClose}
+    >
+      <Space direction="vertical" style={{ width: '100%' }}>
+        <ActionButtons>
+          <Button onClick={searchMore}>
+            <SearchOutlined /> Search More
+          </Button>
+          <Button type="primary" onClick={onHire}>
+            {selected.persons.length > 1 ? (
+              <UsergroupAddOutlined />
+            ) : (
+              <UserAddOutlined />
+            )}
+            Hire Selected
+          </Button>
+        </ActionButtons>
+        <Table
+          rowKey={(person) => person.id}
+          rowSelection={rowSelection}
+          expandable={{
+            expandedRowRender: (person) => {
+              return (
+                <Descriptions
+                  column={1}
+                  bordered
+                  title={`${person.firstName} ${person.lastName}`}
+                >
+                  <Descriptions.Item label="Salary">
+                    {formatMoney(person.salary)}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Design Skill">
+                    {person.expertise.designer}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Developer Skill">
+                    {person.expertise.developer}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="QA Skill">
+                    {person.expertise.qa}
+                  </Descriptions.Item>
+                  <Descriptions.Item label="Marketing Skill">
+                    {person.expertise.marketing}
+                  </Descriptions.Item>
+                </Descriptions>
+              );
+            },
+          }}
+          columns={hireColumns}
+          dataSource={state}
+        />
+      </Space>
+    </Drawer>
   );
 };

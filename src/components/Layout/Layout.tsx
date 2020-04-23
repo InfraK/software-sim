@@ -11,6 +11,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { routes } from 'constants/routes';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
+import { formatMoney } from 'utils/moneyFormatter';
 const { Footer, Sider, Header } = Layout;
 
 interface BaseLayoutProps {
@@ -20,7 +21,10 @@ interface BaseLayoutProps {
 export const BaseLayout = ({ children }: BaseLayoutProps) => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
-  const { money, name } = useSelector(({ company }: RootState) => company);
+  const money = useSelector(
+    ({ finance }: RootState) => finance.slice(-1)[0].money
+  );
+  const name = useSelector(({ company }: RootState) => company.name);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -51,7 +55,8 @@ export const BaseLayout = ({ children }: BaseLayoutProps) => {
             <Link to={routes.staff} />
             <span>Staff</span>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item key={routes.finances}>
+            <Link to={routes.finances} />
             <AccountBookOutlined />
             <span>Finances</span>
           </Menu.Item>
@@ -59,7 +64,7 @@ export const BaseLayout = ({ children }: BaseLayoutProps) => {
       </Sider>
       <Layout>
         <Header>
-          {name || 'Company Name'} | Money: {money}
+          {name || 'Company Name'} | Money: {formatMoney(money)}
         </Header>
         {children}
         <Footer>Software Sim</Footer>

@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 export interface BasicProduct {
   name: string;
 }
@@ -5,7 +7,8 @@ export interface BasicProduct {
 export interface Product extends BasicProduct {
   id: string;
   version: string;
-  features: number;
+  design: number;
+  code: number;
   marketing: number;
   quality: number;
   traffic: number;
@@ -14,25 +17,23 @@ export interface Product extends BasicProduct {
 export interface BasicCEO {
   firstName: string;
   lastName: string;
-  background: CEOBackgrounds;
-}
-
-export interface CEO extends BasicCEO {
-  expertise: Expertise;
+  background: Role;
 }
 
 export interface BasicCompany {
   name: string;
 }
 
-export interface Company extends BasicCompany {
-  money: number;
-  employees: Employee[];
+export interface GameState extends BasicCompany {
+  date: Dayjs;
 }
 
-export type CEOBackgrounds = Roles;
-
-export type Roles = 'Developer' | 'Designer' | 'Marketer' | 'QA';
+export enum Role {
+  'Developer' = 'Developer',
+  'Designer' = 'Designer',
+  'Marketer' = 'Marketer',
+  'QA' = 'QA',
+}
 
 export interface BasicPerson {
   id: string;
@@ -51,11 +52,28 @@ export interface Expertise {
 
 export interface Employee extends BasicPerson {
   productId?: Product['id'];
-  hiredOn: Date;
+  hiredOn: Dayjs;
   salary: number;
-  role?: Roles;
+  role?: Role;
 }
 
 export interface EmployeeWithProduct extends Employee {
   product?: Product;
+}
+export interface ProductWithEmployee extends Product {
+  employees: Employee[];
+}
+
+export interface FinanceRecord {
+  date: Dayjs;
+  concept: Concept;
+  amount: number;
+  money: number;
+}
+
+export type RecordPayload = Omit<FinanceRecord, 'money'>;
+
+export enum Concept {
+  Salaries = 'Salaries',
+  Revenue = 'Revenue',
 }

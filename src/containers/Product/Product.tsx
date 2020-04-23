@@ -30,9 +30,19 @@ const columns = [
     key: 'version',
   },
   {
-    title: 'Features',
-    dataIndex: 'features',
-    key: 'features',
+    title: 'Code',
+    dataIndex: 'code',
+    key: 'code',
+  },
+  {
+    title: 'Traffic',
+    dataIndex: 'traffic',
+    key: 'traffic',
+  },
+  {
+    title: 'Marketing',
+    dataIndex: 'marketing',
+    key: 'marketing',
   },
 ];
 
@@ -52,6 +62,7 @@ export const ProductPage = () => {
   return (
     <Page title="Products">
       <Drawer
+        width={'40vw'}
         title="Create new Product"
         visible={visible}
         onClose={() => setVisible(false)}

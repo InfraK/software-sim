@@ -18,10 +18,10 @@ import { Store } from 'antd/lib/form/interface';
 import { routes } from 'constants/routes';
 import { Link } from 'react-router-dom';
 import { Page } from 'components/Page';
-import { BasicCEO, BasicCompany, CEOBackgrounds } from 'types';
+import { BasicCEO, BasicCompany, Role } from 'types';
 import { useDispatch } from 'react-redux';
 import { createCompany } from 'store/company';
-import { createCEO } from 'store/ceo';
+import { createCEO } from 'store/staff';
 import { ActionButtons } from 'components/ActionButtons';
 const { Step } = Steps;
 const { Title } = Typography;
@@ -39,7 +39,7 @@ export const CompanyCreation = () => {
     ceo: {
       firstName: '',
       lastName: '',
-      background: 'Developer' as CEOBackgrounds,
+      background: Role.Developer,
     },
     company: { name: '' },
   });

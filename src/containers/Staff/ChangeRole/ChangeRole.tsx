@@ -1,32 +1,29 @@
 import React from 'react';
 import { Button, Form, Select, Typography, Drawer } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from 'store';
-import { Employee } from 'types';
+import { useDispatch } from 'react-redux';
+import { Employee, Role } from 'types';
 import { ActionButtons } from 'components/ActionButtons';
-import { assign } from 'store/staff';
+import { changeRole } from 'store/staff';
 import { Store } from 'antd/lib/form/interface';
 const { Option } = Select;
 
-interface AssignEmployeesProps {
+interface ChangeRoleProps {
   employees: Employee[];
-  visible: boolean;
   onClose: () => void;
+  visible: boolean;
 }
-export const AssignEmployees = ({
-  visible,
+
+export const ChangeRole = ({
   onClose,
   employees,
-}: AssignEmployeesProps) => {
+  visible,
+}: ChangeRoleProps) => {
   const dispatch = useDispatch();
-  const products = useSelector((state: RootState) =>
-    Object.values(state.products)
-  );
 
   const [form] = Form.useForm();
 
   const onFinish = (values: Store) => {
-    dispatch(assign({ employees, productId: values.productId }));
+    dispatch(changeRole({ employees, role: values.role }));
     onClose();
     form.resetFields();
   };
@@ -38,13 +35,13 @@ export const AssignEmployees = ({
   return (
     <Drawer
       width={'40vw'}
-      title="Assign Staff"
+      title="Change Role"
       visible={visible}
       onClose={onClose}
     >
       <Form
         form={form}
-        initialValues={{ productId: '' }}
+        initialValues={{ role: 'undefined' }}
         onFinish={onFinish}
         hideRequiredMark
         layout="vertical"
@@ -52,32 +49,28 @@ export const AssignEmployees = ({
         <Typography>
           <Typography.Paragraph>
             {employees.length > 1
-              ? `Assigning ${employees.length} employees`
-              : `Assigning ${employees[0].firstName} ${employees[0].lastName}`}
+              ? `Changing ${employees.length} employees role's`
+              : `Changing ${employees[0].firstName} ${employees[0].lastName} role`}
           </Typography.Paragraph>
         </Typography>
         <Form.Item
-          label="Product Name"
-          name="productId"
+          label="Role"
+          name="role"
           trigger="onSelect"
           validateTrigger="onSelect"
-          rules={[{ required: true, message: 'You need to choose a product!' }]}
+          rules={[{ required: true, message: 'You need to choose a role!' }]}
         >
-          <Select
-            showSearch
-            placeholder="Select a product"
-            optionFilterProp="children"
-          >
-            <Option value="Unassign">Unassign</Option>
-            {products.map((product) => (
-              <Option value={product.id}>{product.name}</Option>
+          <Select placeholder="Select a Role" optionFilterProp="children">
+            <Option value="undefined">None</Option>
+            {Object.values(Role).map((role) => (
+              <Option value={role}>{role}</Option>
             ))}
           </Select>
         </Form.Item>
         <Form.Item>
           <ActionButtons>
             <Button type="primary" htmlType="submit">
-              Assign
+              Change
             </Button>
           </ActionButtons>
         </Form.Item>

@@ -5,4 +5,5 @@ export const routes = {
   staff: '/staff',
   staffDetails: '/staff/:id',
   create: '/create',
+  finances: '/finances',
 };
