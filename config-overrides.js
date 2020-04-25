@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { override, fixBabelImports, addLessLoader } = require('customize-cra');
 const { getThemeVariables } = require('antd/dist/theme');
-const { colors } = require('./src/constants/colors');
 
 module.exports = override(
   fixBabelImports('import', {
@@ -15,11 +14,11 @@ module.exports = override(
       ...getThemeVariables({
         dark: true,
       }),
-      '@primary-color': colors.primaryColor, // primary color for all components
-      '@link-color': colors.linkColor, // link color
-      '@success-color': colors.successColor, // success state color
-      '@warning-color': colors.warningColor, // warning state color
-      '@error-color': colors.errorColor, // error state color
+      '@primary-color': '#1890ff', // primary color for all components
+      '@link-color': '#1890ff', // link color
+      '@success-color': '#52c41a', // success state color
+      '@warning-color': '#faad14', // warning state color
+      '@error-color': '#f5222d', // error state color
       '@font-size-base': '14px', // major text font size
       '@border-radius-base': '4px', // major border radius
     },
