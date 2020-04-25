@@ -24,7 +24,7 @@ export const App = () => {
   const isFinished = useSelector(({ company }: RootState) => company.confirmed);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="software-sim">
       <Switch>
         <Route exact path={routes.create}>
           <CompanyCreation />
