@@ -12,8 +12,8 @@ import { StaffDetails } from 'containers/Staff/StaffDetails';
 import useInterval from 'utils/useInterval';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from 'store';
-import { selectEmployeeProduct } from 'selectors';
 import { updateGame } from 'store/products';
+import { ConditionalRoute } from 'utils/ConditionalRoute';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -21,33 +21,65 @@ export const App = () => {
     dispatch(updateGame());
   }, 10000);
 
+  const isFinished = useSelector(({ company }: RootState) => company.confirmed);
+
   return (
     <BrowserRouter>
-      <BaseLayout>
-        <Switch>
-          <Route exact path={routes.home}>
+      <Switch>
+        <Route exact path={routes.create}>
+          <CompanyCreation />
+        </Route>
+        <BaseLayout>
+          <ConditionalRoute
+            condition={isFinished}
+            redirectTo={routes.create}
+            exact
+            path={routes.home}
+          >
             <Home />
-          </Route>
-          <Route exact path={routes.product}>
+          </ConditionalRoute>
+          <ConditionalRoute
+            condition={isFinished}
+            redirectTo={routes.create}
+            exact
+            path={routes.product}
+          >
             <ProductPage />
-          </Route>
-          <Route exact path={routes.productDetails}>
+          </ConditionalRoute>
+          <ConditionalRoute
+            condition={isFinished}
+            redirectTo={routes.create}
+            exact
+            path={routes.productDetails}
+          >
             <ProductDetails />
-          </Route>
-          <Route exact path={routes.create}>
-            <CompanyCreation />
-          </Route>
-          <Route exact path={routes.staff}>
+          </ConditionalRoute>
+          <ConditionalRoute
+            condition={isFinished}
+            redirectTo={routes.create}
+            exact
+            path={routes.staff}
+          >
             <Staff />
-          </Route>
-          <Route exact path={routes.staffDetails}>
+          </ConditionalRoute>
+          <ConditionalRoute
+            condition={isFinished}
+            redirectTo={routes.create}
+            exact
+            path={routes.staffDetails}
+          >
             <StaffDetails />
-          </Route>
-          <Route exact path={routes.finances}>
+          </ConditionalRoute>
+          <ConditionalRoute
+            condition={isFinished}
+            redirectTo={routes.create}
+            exact
+            path={routes.finances}
+          >
             <Finance />
-          </Route>
-        </Switch>
-      </BaseLayout>
+          </ConditionalRoute>
+        </BaseLayout>
+      </Switch>
     </BrowserRouter>
   );
 };

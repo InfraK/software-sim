@@ -1,6 +1,5 @@
 import { Dayjs } from 'dayjs';
 import { AvatarKey } from 'utils/avatar';
-import { Avatar } from 'antd';
 
 export interface BasicProduct {
   name: string;
@@ -30,6 +29,7 @@ export interface BasicCompany {
 
 export interface GameState extends BasicCompany {
   date: Dayjs;
+  confirmed: boolean;
 }
 
 export enum Role {

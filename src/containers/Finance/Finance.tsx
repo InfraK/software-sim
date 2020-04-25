@@ -9,6 +9,7 @@ import { formatMoney } from 'utils/moneyFormatter';
 import { FinanceRecord } from 'types';
 import dayjs from 'dayjs';
 import { RootState } from 'store';
+import { colors } from 'constants/colors';
 
 export const Finance = () => {
   const records = useSelector(({ finance }: RootState) => finance);
@@ -61,13 +62,18 @@ export const Finance = () => {
           <Statistic
             title="Money"
             value={formatMoney(money)}
-            valueStyle={{ color: money > 0 ? '#3f8600' : '#cf1322' }}
+            valueStyle={{
+              color: money > 0 ? colors.successColor : colors.errorColor,
+            }}
           />
         </Card>
         <Card>
           <Statistic
             title="Avergage income (last 10 days)"
-            valueStyle={{ color: getLast10Days > 0 ? '#3f8600' : '#cf1322' }}
+            valueStyle={{
+              color:
+                getLast10Days > 0 ? colors.successColor : colors.errorColor,
+            }}
             value={formatMoney(getLast10Days)}
             suffix="/day"
           />
@@ -75,7 +81,9 @@ export const Finance = () => {
         <Card>
           <Statistic
             title="Last 30 days Winnings"
-            valueStyle={{ color: last30Days > 0 ? '#3f8600' : '#cf1322' }}
+            valueStyle={{
+              color: last30Days > 0 ? colors.successColor : colors.errorColor,
+            }}
             value={formatMoney(last30Days)}
           />
         </Card>
@@ -83,7 +91,9 @@ export const Finance = () => {
           <Statistic
             title="Las 30 Days Growth"
             precision={2}
-            valueStyle={{ color: winnings ? '#3f8600' : '#cf1322' }}
+            valueStyle={{
+              color: winnings ? colors.successColor : colors.errorColor,
+            }}
             prefix={winnings ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
             suffix="%"
             value={percent}

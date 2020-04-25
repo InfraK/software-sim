@@ -6,6 +6,7 @@ import { initialDate } from 'constants/config';
 const initialState: GameState = {
   name: '',
   date: initialDate,
+  confirmed: false,
 };
 
 const companySlice = createSlice({
@@ -18,8 +19,15 @@ const companySlice = createSlice({
     incrementDate(state) {
       state.date = dayjs(state.date).add(1, 'day');
     },
+    confirmCreate(state) {
+      state.confirmed = true;
+    },
   },
 });
 
-export const { createCompany, incrementDate } = companySlice.actions;
+export const {
+  createCompany,
+  incrementDate,
+  confirmCreate,
+} = companySlice.actions;
 export const companyReducer = companySlice.reducer;

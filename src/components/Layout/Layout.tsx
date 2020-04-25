@@ -42,11 +42,11 @@ export const BaseLayout = ({ children }: BaseLayoutProps) => {
             <span>Home</span>
             <Link to={routes.home} />
           </Menu.Item>
-          <Menu.Item key={routes.create}>
+          {/* <Menu.Item key={routes.create}>
             <MailOutlined />
             <Link to={routes.create} />
             <span>Mail</span>
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item key={routes.product}>
             <Link to={routes.product} />
             <CodeOutlined />

@@ -8,6 +8,8 @@ import {
   Button,
   Result,
   Space,
+  Avatar,
+  Radio,
 } from 'antd';
 import {
   SolutionOutlined,
@@ -16,13 +18,15 @@ import {
 } from '@ant-design/icons';
 import { Store } from 'antd/lib/form/interface';
 import { routes } from 'constants/routes';
-import { Link } from 'react-router-dom';
-import { Page } from 'components/Page';
+import { Link, Redirect } from 'react-router-dom';
 import { BasicCEO, BasicCompany, Role, Gender } from 'types';
-import { useDispatch } from 'react-redux';
-import { createCompany } from 'store/company';
+import { useDispatch, useSelector } from 'react-redux';
+import { createCompany, confirmCreate } from 'store/company';
 import { createCEO } from 'store/staff';
 import { ActionButtons } from 'components/ActionButtons';
+import styled from 'styled-components';
+import { avatars, mansAvatar, womansAvatar, AvatarKey } from 'utils/avatar';
+import { RootState } from 'store';
 const { Step } = Steps;
 const { Title } = Typography;
 
@@ -34,6 +38,8 @@ interface State {
 
 export const CompanyCreation = () => {
   const dispatch = useDispatch();
+  const isFinished = useSelector((state: RootState) => state.company.confirmed);
+
   const [state, setState] = useState<State>({
     step: 0,
     ceo: {
@@ -45,6 +51,10 @@ export const CompanyCreation = () => {
     },
     company: { name: '' },
   });
+
+  if (isFinished) {
+    return <Redirect to={routes.home} />;
+  }
 
   const handleCeoSubmit = (values: BasicCEO) => {
     setState((prev) => ({ ...prev, step: prev.step + 1, ceo: values }));
@@ -60,40 +70,61 @@ export const CompanyCreation = () => {
     setState((prev) => ({ ...prev, step: prev.step - 1 }));
   };
 
+  const confirm = () => {
+    dispatch(confirmCreate());
+  };
+
   const { step, ceo, company } = state;
 
   return (
-    <Page title="Creating new Company">
-      <Steps current={step}>
-        <Step title="CEO" icon={<UserOutlined />} />
-        <Step title="Company" icon={<SolutionOutlined />} />
-        <Step title="Done" icon={<SmileOutlined />} />
-      </Steps>
-      {step === 0 && <CEOForm values={ceo} onSubmit={handleCeoSubmit} />}
-      {step === 1 && (
-        <CompanyForm
-          values={company}
-          onSubmit={handleCompanySubmit}
-          onBack={handleBack}
-        />
-      )}
-      {step === 2 && (
-        <Result
-          status="success"
-          title={`Hurray! ${company.name} is now a real Company!`}
-          subTitle={`${ceo.firstName} ${ceo.lastName} now that you have founded your company, it's time to get working`}
-          extra={[
-            <Link to={routes.home}>
-              <Button type="primary" key="home">
-                Go Home
-              </Button>
-            </Link>,
-          ]}
-        />
-      )}
-    </Page>
+    <Container>
+      <Wrapper direction="vertical">
+        <Steps current={step}>
+          <Step title="CEO" icon={<UserOutlined />} />
+          <Step title="Company" icon={<SolutionOutlined />} />
+          <Step title="Done" icon={<SmileOutlined />} />
+        </Steps>
+        {step === 0 && <CEOForm values={ceo} onSubmit={handleCeoSubmit} />}
+        {step === 1 && (
+          <CompanyForm
+            values={company}
+            onSubmit={handleCompanySubmit}
+            onBack={handleBack}
+          />
+        )}
+        {step === 2 && (
+          <Result
+            status="success"
+            title={`Hurray! ${company.name} is now a real Company!`}
+            subTitle={`${ceo.firstName} ${ceo.lastName} now that you have founded your company, it's time to get working`}
+            extra={[
+              <Link to={routes.home} onClick={confirm}>
+                <Button type="primary" key="home">
+                  Go Home
+                </Button>
+              </Link>,
+            ]}
+          />
+        )}
+      </Wrapper>
+    </Container>
   );
 };
+
+const Wrapper = styled(Space)`
+  width: 100%;
+  max-width: 40rem;
+  min-height: 25rem;
+  padding: 1rem;
+`;
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 interface CEOFormProps {
   values: BasicCEO;
@@ -102,17 +133,23 @@ interface CEOFormProps {
 
 const CEOForm = ({ values, onSubmit }: CEOFormProps) => {
   const [form] = Form.useForm();
-
+  const [gender, setGender] = useState(Gender.Man);
   const onFinish = (values: Store) => {
     onSubmit(values as BasicCEO);
+  };
+  const avatarOptions = gender === Gender.Man ? mansAvatar : womansAvatar;
+
+  const handleChangeValues = (values: any) => {
+    if (values.gender && values.gender !== gender) {
+      setGender(values.gender);
+    }
   };
 
   return (
     <Form
-      labelCol={{ span: 4 }}
-      wrapperCol={{ span: 14 }}
-      layout="vertical"
       form={form}
+      layout="vertical"
+      onValuesChange={handleChangeValues}
       initialValues={values}
       onFinish={onFinish}
       hideRequiredMark
@@ -146,6 +183,40 @@ const CEOForm = ({ values, onSubmit }: CEOFormProps) => {
           <Select.Option value="QA">QA</Select.Option>
         </Select>
       </Form.Item>
+      <Form.Item
+        label="Gender"
+        name="gender"
+        rules={[{ required: true, message: 'Choose your gender!' }]}
+      >
+        <Select>
+          <Select.Option value={Gender.Man}>Man</Select.Option>
+          <Select.Option value={Gender.Woman}>Woman</Select.Option>
+        </Select>
+      </Form.Item>
+      <Form.Item
+        label="Avatar"
+        name="avatar"
+        rules={[
+          { required: true, message: 'Choose your Avatar' },
+          {
+            validator: (field, value) =>
+              Object.keys(avatarOptions).includes(value)
+                ? Promise.resolve()
+                : Promise.reject('Choose your Avatar'),
+          },
+        ]}
+      >
+        <Radio.Group>
+          {Object.keys(avatarOptions).map((avatar) => (
+            <Radio value={avatar}>
+              <Avatar
+                src={avatars[avatar as AvatarKey]}
+                style={{ width: '4rem', height: '4rem' }}
+              />
+            </Radio>
+          ))}
+        </Radio.Group>
+      </Form.Item>
       <Form.Item>
         <ActionButtons>
           <Button type="primary" htmlType="submit">
@@ -172,8 +243,6 @@ const CompanyForm = ({ values, onSubmit, onBack }: CompanyForm) => {
 
   return (
     <Form
-      labelCol={{ span: 4 }}
-      wrapperCol={{ span: 14 }}
       layout="vertical"
       form={form}
       initialValues={values}
