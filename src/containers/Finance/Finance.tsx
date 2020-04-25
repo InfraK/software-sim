@@ -20,7 +20,7 @@ export const Finance = () => {
       key: 'date',
       sorter: ({ date: dateA }, { date: dateB }) =>
         dayjs(dateA).isBefore(dateB) ? 1 : -1,
-      render: (date) => <span>{dayjs(date).format('MM-DD-YYYY')}</span>,
+      render: (date) => <span>{dayjs(date).format('L')}</span>,
       defaultSortOrder: 'ascend',
     },
     {

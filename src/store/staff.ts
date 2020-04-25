@@ -59,7 +59,10 @@ const buildEmployee = (basic: BasicPerson): Employee => {
   return { ...emptyEmployee(), ...basic };
 };
 
-const emptyEmployee = (): Omit<Employee, 'expertise' | 'salary' | 'id'> => ({
+const emptyEmployee = (): Omit<
+  Employee,
+  'expertise' | 'salary' | 'id' | 'avatar' | 'gender'
+> => ({
   hiredOn: dayjs(),
   firstName: '',
   lastName: '',

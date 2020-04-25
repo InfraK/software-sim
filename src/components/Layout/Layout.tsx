@@ -12,6 +12,8 @@ import { routes } from 'constants/routes';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
 import { formatMoney } from 'utils/moneyFormatter';
+import dayjs from 'dayjs';
+
 const { Footer, Sider, Header } = Layout;
 
 interface BaseLayoutProps {
@@ -24,7 +26,7 @@ export const BaseLayout = ({ children }: BaseLayoutProps) => {
   const money = useSelector(
     ({ finance }: RootState) => finance.slice(-1)[0].money
   );
-  const name = useSelector(({ company }: RootState) => company.name);
+  const { date, name } = useSelector(({ company }: RootState) => company);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -64,7 +66,8 @@ export const BaseLayout = ({ children }: BaseLayoutProps) => {
       </Sider>
       <Layout>
         <Header>
-          {name || 'Company Name'} | Money: {formatMoney(money)}
+          {name || 'Company Name'} | Money: {formatMoney(money)} | Date:{' '}
+          {dayjs(date).format('LL')}
         </Header>
         {children}
         <Footer>Software Sim</Footer>

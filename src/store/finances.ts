@@ -1,10 +1,10 @@
 import { FinanceRecord, Concept, RecordPayload } from 'types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import dayjs from 'dayjs';
+import { initialDate } from 'constants/config';
 
 const initialState: FinanceRecord[] = [
   {
-    date: dayjs('2010-01-01'),
+    date: initialDate,
     amount: 50000,
     money: 50000,
     concept: Concept.Revenue,

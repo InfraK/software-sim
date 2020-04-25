@@ -18,7 +18,7 @@ import { Store } from 'antd/lib/form/interface';
 import { routes } from 'constants/routes';
 import { Link } from 'react-router-dom';
 import { Page } from 'components/Page';
-import { BasicCEO, BasicCompany, Role } from 'types';
+import { BasicCEO, BasicCompany, Role, Gender } from 'types';
 import { useDispatch } from 'react-redux';
 import { createCompany } from 'store/company';
 import { createCEO } from 'store/staff';
@@ -40,6 +40,8 @@ export const CompanyCreation = () => {
       firstName: '',
       lastName: '',
       background: Role.Developer,
+      avatar: 'man1',
+      gender: Gender.Man,
     },
     company: { name: '' },
   });

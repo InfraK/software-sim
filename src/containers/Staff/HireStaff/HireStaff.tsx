@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Table, Button, Space, Descriptions, Drawer } from 'antd';
+import { Table, Button, Space, Descriptions, Drawer, Avatar } from 'antd';
 import {
-  SearchOutlined,
   UserAddOutlined,
   UsergroupAddOutlined,
+  SyncOutlined,
 } from '@ant-design/icons';
 import { BasicPerson } from 'types';
 import { ActionButtons } from 'components/ActionButtons';
-import { generatePersons } from 'utils';
+import { generatePersons, getAvatar } from 'utils';
 import { ColumnsType } from 'antd/lib/table';
 import { TableRowSelection } from 'antd/lib/table/interface';
 import { formatMoney } from 'utils/moneyFormatter';
@@ -65,8 +65,8 @@ export const HireStaff = ({ visible, onClose, onSubmit }: HireStaffProps) => {
     onChange: onSelectChange,
   };
 
-  const searchMore = () => {
-    setState((prev) => [...prev, ...generatePersons(10)]);
+  const refresh = () => {
+    setState(generatePersons(10));
   };
 
   return (
@@ -78,8 +78,9 @@ export const HireStaff = ({ visible, onClose, onSubmit }: HireStaffProps) => {
     >
       <Space direction="vertical" style={{ width: '100%' }}>
         <ActionButtons>
-          <Button onClick={searchMore}>
-            <SearchOutlined /> Search More
+          <Button onClick={refresh}>
+            <SyncOutlined />
+            Refresh Results
           </Button>
           <Button type="primary" onClick={onHire}>
             {selected.persons.length > 1 ? (
@@ -96,27 +97,37 @@ export const HireStaff = ({ visible, onClose, onSubmit }: HireStaffProps) => {
           expandable={{
             expandedRowRender: (person) => {
               return (
-                <Descriptions
-                  column={1}
-                  bordered
-                  title={`${person.firstName} ${person.lastName}`}
-                >
-                  <Descriptions.Item label="Salary">
-                    {formatMoney(person.salary)}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Design Skill">
-                    {person.expertise.designer}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Developer Skill">
-                    {person.expertise.developer}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="QA Skill">
-                    {person.expertise.qa}
-                  </Descriptions.Item>
-                  <Descriptions.Item label="Marketing Skill">
-                    {person.expertise.marketing}
-                  </Descriptions.Item>
-                </Descriptions>
+                <>
+                  <Descriptions
+                    column={1}
+                    bordered
+                    title={
+                      <Space>
+                        <Avatar src={getAvatar(person.avatar)} />
+                        <span>
+                          {person.firstName} {person.lastName}
+                        </span>
+                      </Space>
+                    }
+                  >
+                    {console.log(getAvatar(person.avatar))}
+                    <Descriptions.Item label="Salary">
+                      {formatMoney(person.salary)}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Design Skill">
+                      {person.expertise.designer}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Developer Skill">
+                      {person.expertise.developer}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="QA Skill">
+                      {person.expertise.qa}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Marketing Skill">
+                      {person.expertise.marketing}
+                    </Descriptions.Item>
+                  </Descriptions>
+                </>
               );
             },
           }}

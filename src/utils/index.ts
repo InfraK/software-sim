@@ -1,8 +1,10 @@
-import { Expertise } from './../types/index';
-import { firstNames } from 'constants/firstNames';
-import { lastNames } from 'constants/lastNames';
+import { Expertise, Gender } from './../types/index';
+import mansFirst from 'constants/mansFirst.json';
+import womansFirst from 'constants/femaleFirst.json';
+import lastNames from 'constants/lastNames.json';
 import { BasicPerson } from 'types';
 import { v4 as uuid } from 'uuid';
+import { avatars, AvatarKey, mansAvatar, womansAvatar } from './avatar';
 
 export const getRandomInRange = (min: number, max: number): number =>
   Math.floor(Math.random() * (max - min)) + min;
@@ -10,7 +12,9 @@ export const getRandomInRange = (min: number, max: number): number =>
 export const getRandomItem = <T>(array: T[]): T =>
   array[getRandomInRange(0, array.length)];
 
-export const getRandomFirstName = () => getRandomItem(firstNames);
+export const getRandomFirstName = (gender: Gender) =>
+  gender === Gender.Man ? getRandomItem(mansFirst) : getRandomItem(womansFirst);
+
 export const getRandomLastName = () => getRandomItem(lastNames);
 
 export const getRandomExpertise = (): Expertise => {
@@ -24,14 +28,26 @@ export const getRandomExpertise = (): Expertise => {
 
 export const generateBasicPerson = (): BasicPerson => {
   const expertise = getRandomExpertise();
+  const gender = getRandomItem(Object.values(Gender));
   return {
-    firstName: getRandomFirstName(),
+    firstName: getRandomFirstName(gender),
     lastName: getRandomLastName(),
     expertise,
     salary: calculateSalary(expertise),
     id: uuid(),
+    gender,
+    avatar: getRandomAvatarKey(gender),
   };
 };
+
+export const getRandomAvatarKey = (gender: Gender): AvatarKey =>
+  getRandomItem(
+    Object.keys(
+      gender === Gender.Man ? mansAvatar : womansAvatar
+    ) as AvatarKey[]
+  );
+
+export const getAvatar = (key: AvatarKey) => avatars[key];
 
 const salaryPerPoint = 20;
 

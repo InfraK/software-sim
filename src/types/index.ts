@@ -1,4 +1,6 @@
 import { Dayjs } from 'dayjs';
+import { AvatarKey } from 'utils/avatar';
+import { Avatar } from 'antd';
 
 export interface BasicProduct {
   name: string;
@@ -17,7 +19,9 @@ export interface Product extends BasicProduct {
 export interface BasicCEO {
   firstName: string;
   lastName: string;
+  gender: Gender;
   background: Role;
+  avatar: AvatarKey;
 }
 
 export interface BasicCompany {
@@ -41,6 +45,13 @@ export interface BasicPerson {
   lastName: string;
   expertise: Expertise;
   salary: number;
+  avatar: AvatarKey;
+  gender: Gender;
+}
+
+export enum Gender {
+  'Man' = 'Man',
+  'Woman' = 'Woman',
 }
 
 export interface Expertise {

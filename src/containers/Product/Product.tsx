@@ -33,16 +33,31 @@ const columns = [
     title: 'Code',
     dataIndex: 'code',
     key: 'code',
+    render: (code: number) => <span>{Math.floor(code)}</span>,
   },
   {
-    title: 'Traffic',
-    dataIndex: 'traffic',
-    key: 'traffic',
+    title: 'Design',
+    dataIndex: 'design',
+    key: 'design',
+    render: (design: number) => <span>{Math.floor(design)}</span>,
+  },
+  {
+    title: 'Quality',
+    dataIndex: 'quality',
+    key: 'quality',
+    render: (quality: number) => <span>{Math.floor(quality)}</span>,
   },
   {
     title: 'Marketing',
     dataIndex: 'marketing',
     key: 'marketing',
+    render: (marketing: number) => <span>{Math.floor(marketing)}</span>,
+  },
+  {
+    title: 'Traffic',
+    dataIndex: 'traffic',
+    key: 'traffic',
+    render: (traffic: number) => <span>{Math.floor(traffic)}</span>,
   },
 ];
 

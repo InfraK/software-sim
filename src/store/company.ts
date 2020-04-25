@@ -1,10 +1,11 @@
 import dayjs from 'dayjs';
 import { GameState, BasicCompany } from 'types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { initialDate } from 'constants/config';
 
 const initialState: GameState = {
   name: '',
-  date: dayjs('2010-01-01'),
+  date: initialDate,
 };
 
 const companySlice = createSlice({
